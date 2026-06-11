@@ -3,45 +3,37 @@ package com.mariacarvalho.studytrack
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mariacarvalho.studytrack.data.local.StudyTrackDatabase
+import com.mariacarvalho.studytrack.data.repository.StudyRepository
+import com.mariacarvalho.studytrack.navigation.AppNavigation
 import com.mariacarvalho.studytrack.ui.theme.StudyTrackTheme
+import com.mariacarvalho.studytrack.viewmodel.StudyViewModel
+import com.mariacarvalho.studytrack.viewmodel.StudyViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        val database = StudyTrackDatabase.getDatabase(applicationContext)
+
+        val repository = StudyRepository(
+            subjectDao = database.subjectDao(),
+            studySessionDao = database.studySessionDao()
+        )
+
+        val factory = StudyViewModelFactory(repository)
+
         setContent {
             StudyTrackTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                val studyViewModel: StudyViewModel = viewModel(
+                    factory = factory
+                )
+
+                AppNavigation(
+                    viewModel = studyViewModel
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    StudyTrackTheme {
-        Greeting("Android")
     }
 }
