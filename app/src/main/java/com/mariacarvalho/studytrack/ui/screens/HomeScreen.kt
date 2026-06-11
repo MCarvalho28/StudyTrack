@@ -24,7 +24,8 @@ import com.mariacarvalho.studytrack.viewmodel.StudyViewModel
 @Composable
 fun HomeScreen(
     viewModel: StudyViewModel,
-    onAddSubjectClick: () -> Unit
+    onAddSubjectClick: () -> Unit,
+    onSubjectClick: (Int) -> Unit
 ) {
     val subjects by viewModel.subjects.collectAsState(initial = emptyList())
 
@@ -75,7 +76,7 @@ fun HomeScreen(
                         SubjectCard(
                             subject = subject,
                             onClick = {
-                                // detalhes da disciplina
+                                onSubjectClick(subject.id)
                             }
                         )
                     }

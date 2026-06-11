@@ -16,6 +16,9 @@ class StudyViewModel(
 
     val subjects: Flow<List<SubjectEntity>> = repository.getAllSubjects()
 
+    private val _selectedSubject = MutableStateFlow<SubjectEntity?>(null)
+    val selectedSubject: StateFlow<SubjectEntity?> = _selectedSubject
+
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
 
@@ -35,6 +38,17 @@ class StudyViewModel(
                 _errorMessage.value = null
             } catch (e: Exception) {
                 _errorMessage.value = "Erro ao adicionar disciplina."
+            }
+        }
+    }
+
+    fun loadSubjectById(subjectId: Int) {
+        viewModelScope.launch {
+            try {
+                _selectedSubject.value = repository.getSubjectById(subjectId)
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                _errorMessage.value = "Erro ao carregar disciplina."
             }
         }
     }
