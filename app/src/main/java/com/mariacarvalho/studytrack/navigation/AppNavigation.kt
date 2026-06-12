@@ -11,6 +11,7 @@ import com.mariacarvalho.studytrack.ui.screens.AddSubjectScreen
 import com.mariacarvalho.studytrack.ui.screens.HomeScreen
 import com.mariacarvalho.studytrack.ui.screens.SubjectDetailScreen
 import com.mariacarvalho.studytrack.viewmodel.StudyViewModel
+import com.mariacarvalho.studytrack.ui.screens.EditSubjectScreen
 
 @Composable
 fun AppNavigation(
@@ -60,6 +61,9 @@ fun AppNavigation(
                 },
                 onAddSessionClick = {
                     navController.navigate(Screen.AddStudySession.createRoute(subjectId))
+                },
+                onEditSubjectClick = {
+                    navController.navigate(Screen.EditSubject.createRoute(subjectId))
                 }
             )
         }
@@ -75,6 +79,24 @@ fun AppNavigation(
             val subjectId = backStackEntry.arguments?.getInt("subjectId") ?: 0
 
             AddStudySessionScreen(
+                subjectId = subjectId,
+                viewModel = viewModel,
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(
+            route = Screen.EditSubject.route,
+            arguments = listOf(
+                navArgument("subjectId") {
+                    type = NavType.IntType
+                }
+            )
+        ) { backStackEntry ->
+            val subjectId = backStackEntry.arguments?.getInt("subjectId") ?: 0
+
+            EditSubjectScreen(
                 subjectId = subjectId,
                 viewModel = viewModel,
                 onBackClick = {

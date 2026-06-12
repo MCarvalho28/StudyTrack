@@ -44,7 +44,8 @@ fun SubjectDetailScreen(
     subjectId: Int,
     viewModel: StudyViewModel,
     onBackClick: () -> Unit,
-    onAddSessionClick: () -> Unit
+    onAddSessionClick: () -> Unit,
+    onEditSubjectClick: () -> Unit
 ) {
     val selectedSubject by viewModel.selectedSubject.collectAsState()
     val sessions by viewModel.getSessionsBySubject(subjectId).collectAsState(initial = emptyList())
@@ -220,6 +221,21 @@ fun SubjectDetailScreen(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(text = "Adicionar sessão de estudo")
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            OutlinedButton(
+                onClick = onEditSubjectClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = "Editar disciplina")
             }
 
             Spacer(modifier = Modifier.height(10.dp))

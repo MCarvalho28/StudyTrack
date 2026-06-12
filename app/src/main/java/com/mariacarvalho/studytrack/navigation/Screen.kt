@@ -14,4 +14,10 @@ sealed class Screen(val route: String) {
             return "add_study_session/$subjectId"
         }
     }
+
+    object EditSubject : Screen("edit_subject/{subjectId}") {
+        fun createRoute(subjectId: Int): String {
+            return "edit_subject/$subjectId"
+        }
+    }
 }
