@@ -38,6 +38,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mariacarvalho.studytrack.viewmodel.StudyViewModel
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 @Composable
 fun SubjectDetailScreen(
@@ -50,6 +55,7 @@ fun SubjectDetailScreen(
     val selectedSubject by viewModel.selectedSubject.collectAsState()
     val sessions by viewModel.getSessionsBySubject(subjectId).collectAsState(initial = emptyList())
     val totalMinutes by viewModel.getTotalStudyTime(subjectId).collectAsState(initial = 0)
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     val total = totalMinutes ?: 0
     val progress = when {
@@ -242,10 +248,7 @@ fun SubjectDetailScreen(
 
             OutlinedButton(
                 onClick = {
-                    selectedSubject?.let {
-                        viewModel.deleteSubject(it)
-                        onBackClick()
-                    }
+                    showDeleteDialog = true
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -341,6 +344,50 @@ fun SubjectDetailScreen(
             }
         }
     }
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showDeleteDialog = false
+            },
+            containerColor = Color(0xFF1E1A36),
+            titleContentColor = Color.White,
+            textContentColor = Color(0xFF8C86A8),
+            title = {
+                Text(text = "Apagar disciplina?")
+            },
+            text = {
+                Text(
+                    text = "Tens a certeza que queres apagar esta disciplina? Todas as sessões de estudo associadas também serão removidas."
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        selectedSubject?.let {
+                            viewModel.deleteSubject(it)
+                            showDeleteDialog = false
+                            onBackClick()
+                        }
+                    }
+                ) {
+                    Text(text = "Apagar")
+                }
+            },
+            dismissButton = {
+                OutlinedButton(
+                    onClick = {
+                        showDeleteDialog = false
+                    },
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Cancelar")
+                }
+            }
+        )
+    }
+
 }
 
 @Composable
