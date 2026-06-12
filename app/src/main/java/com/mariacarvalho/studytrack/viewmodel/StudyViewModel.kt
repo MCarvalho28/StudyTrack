@@ -16,6 +16,10 @@ class StudyViewModel(
 
     val subjects: Flow<List<SubjectEntity>> = repository.getAllSubjects()
 
+    val allSessions: Flow<List<StudySessionEntity>> = repository.getAllSessions()
+
+    val totalStudyTime: Flow<Int?> = repository.getTotalStudyTime()
+
     private val _selectedSubject = MutableStateFlow<SubjectEntity?>(null)
     val selectedSubject: StateFlow<SubjectEntity?> = _selectedSubject
 

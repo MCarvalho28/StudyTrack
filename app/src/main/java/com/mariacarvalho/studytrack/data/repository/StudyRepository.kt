@@ -31,6 +31,14 @@ class StudyRepository(
         subjectDao.deleteSubject(subject)
     }
 
+    fun getAllSessions(): Flow<List<StudySessionEntity>> {
+        return studySessionDao.getAllSessions()
+    }
+
+    fun getTotalStudyTime(): Flow<Int?> {
+        return studySessionDao.getTotalStudyTime()
+    }
+
     fun getSessionsBySubject(subjectId: Int): Flow<List<StudySessionEntity>> {
         return studySessionDao.getSessionsBySubject(subjectId)
     }

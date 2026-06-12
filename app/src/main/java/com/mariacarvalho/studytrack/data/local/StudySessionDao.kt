@@ -27,4 +27,10 @@ interface StudySessionDao {
 
     @Query("DELETE FROM study_sessions WHERE id = :sessionId")
     suspend fun deleteSessionById(sessionId: Int)
+
+    @Query("SELECT * FROM study_sessions ORDER BY date DESC")
+    fun getAllSessions(): Flow<List<StudySessionEntity>>
+
+    @Query("SELECT SUM(durationMinutes) FROM study_sessions")
+    fun getTotalStudyTime(): Flow<Int?>
 }
