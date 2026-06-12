@@ -216,7 +216,10 @@ fun AddSubjectScreen(
 
             OutlinedButton(
                 onClick = {
-                    viewModel.addSubject(subjectName)
+                    viewModel.addSubject(
+                        name = subjectName,
+                        color = selectedColor.toHex()
+                    )
 
                     if (subjectName.isNotBlank()) {
                         onBackClick()
@@ -396,4 +399,12 @@ private fun PreviewSubjectCard(
             )
         }
     }
+}
+
+private fun Color.toHex(): String {
+    val red = (red * 255).toInt()
+    val green = (green * 255).toInt()
+    val blue = (blue * 255).toInt()
+
+    return "#%02X%02X%02X".format(red, green, blue)
 }

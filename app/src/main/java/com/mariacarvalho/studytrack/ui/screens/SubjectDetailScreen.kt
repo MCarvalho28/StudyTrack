@@ -63,6 +63,7 @@ fun SubjectDetailScreen(
         total >= 300 -> 1f
         else -> total / 300f
     }
+    val subjectColor = selectedSubject?.color?.toColor() ?: Color(0xFFA78BFA)
 
     LaunchedEffect(subjectId) {
         viewModel.loadSubjectById(subjectId)
@@ -123,7 +124,7 @@ fun SubjectDetailScreen(
                     Icon(
                         imageVector = Icons.Default.School,
                         contentDescription = null,
-                        tint = Color(0xFFA78BFA),
+                        tint = subjectColor,
                         modifier = Modifier.size(28.dp)
                     )
                 }
@@ -139,7 +140,7 @@ fun SubjectDetailScreen(
 
                     Text(
                         text = "Adicionada recentemente",
-                        color = Color(0xFF8C86A8),
+                        color = subjectColor,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -459,5 +460,13 @@ private fun StudySessionCard(
                 color = Color(0xFFFF9F7A)
             )
         }
+    }
+}
+
+private fun String.toColor(): Color {
+    return try {
+        Color(android.graphics.Color.parseColor(this))
+    } catch (e: Exception) {
+        Color(0xFFA78BFA)
     }
 }

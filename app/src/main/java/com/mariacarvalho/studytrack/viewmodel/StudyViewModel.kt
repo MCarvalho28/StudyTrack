@@ -26,7 +26,7 @@ class StudyViewModel(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
 
-    fun addSubject(name: String) {
+    fun addSubject(name: String, color: String = "#A78BFA") {
         if (name.isBlank()) {
             _errorMessage.value = "O nome da disciplina não pode estar vazio."
             return
@@ -36,7 +36,8 @@ class StudyViewModel(
             try {
                 repository.insertSubject(
                     SubjectEntity(
-                        name = name.trim()
+                        name = name.trim(),
+                        color = color
                     )
                 )
                 _errorMessage.value = null

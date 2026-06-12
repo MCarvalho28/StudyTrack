@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mariacarvalho.studytrack.data.local.SubjectEntity
-import kotlin.math.abs
 
 @Composable
 fun SubjectCard(
@@ -29,7 +28,7 @@ fun SubjectCard(
     sessionsCount: Int,
     onClick: () -> Unit
 ) {
-    val iconColor = getSubjectColor(subject.id)
+    val iconColor = subject.color.toColor()
 
     Row(
         modifier = Modifier
@@ -81,14 +80,10 @@ fun SubjectCard(
     }
 }
 
-private fun getSubjectColor(id: Int): Color {
-    val colors = listOf(
-        Color(0xFFA78BFA),
-        Color(0xFF5EEAD4),
-        Color(0xFFFF9F7A),
-        Color(0xFF93C5FD),
-        Color(0xFFF9A8D4)
-    )
-
-    return colors[abs(id) % colors.size]
+private fun String.toColor(): Color {
+    return try {
+        Color(android.graphics.Color.parseColor(this))
+    } catch (e: Exception) {
+        Color(0xFFA78BFA)
+    }
 }

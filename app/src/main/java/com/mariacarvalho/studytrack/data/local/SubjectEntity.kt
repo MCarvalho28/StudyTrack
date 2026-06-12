@@ -8,5 +8,5 @@ data class SubjectEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
-    val color: String = "#3F51B5"
+    val color: String = "#A78BFA"
 )

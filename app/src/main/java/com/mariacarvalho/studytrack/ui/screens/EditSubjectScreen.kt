@@ -72,6 +72,7 @@ fun EditSubjectScreen(
     LaunchedEffect(selectedSubject) {
         selectedSubject?.let {
             subjectName = it.name
+            selectedColor = it.color.toColor()
         }
     }
 
@@ -227,7 +228,7 @@ fun EditSubjectScreen(
                         viewModel.updateSubject(
                             id = it.id,
                             name = subjectName,
-                            color = it.color
+                            color = selectedColor.toHex()
                         )
 
                         if (subjectName.isNotBlank()) {
@@ -408,5 +409,21 @@ private fun EditPreviewSubjectCard(
                 style = MaterialTheme.typography.bodySmall
             )
         }
+    }
+}
+
+private fun Color.toHex(): String {
+    val red = (red * 255).toInt()
+    val green = (green * 255).toInt()
+    val blue = (blue * 255).toInt()
+
+    return "#%02X%02X%02X".format(red, green, blue)
+}
+
+private fun String.toColor(): Color {
+    return try {
+        Color(android.graphics.Color.parseColor(this))
+    } catch (e: Exception) {
+        Color(0xFFA78BFA)
     }
 }
